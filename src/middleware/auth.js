@@ -1,5 +1,6 @@
 const User = require('../model/usermodel');
 const { decodeToken } = require('../utils/token')
+const { errorResponse } = require('../utils/responses')
 
 
 const authguard = async(req,res,next) => {
@@ -10,7 +11,6 @@ const authguard = async(req,res,next) => {
             const user = await User.findById(decode.id);
             if(!user) return errorResponse(res,401,'user not found');
             req.user = user;
-            console.log(req.user);
             return next()
         } else {
             return errorResponse(res,401,'authorization not found');
