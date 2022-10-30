@@ -1,6 +1,5 @@
 const Article = require('../model/articlemodel');
 const { successResponse, handleError, errorResponse } = require('../utils/responses');
-const User = require('../model/usermodel');
 
 const createArticle = async (req, res) => {
   try {
@@ -28,8 +27,8 @@ const createArticle = async (req, res) => {
 const getAllArticles = async (req, res) => {
   try {
     const articles = await Article.find();
-    const article = articles.filter((article) => article.state === 'published');
     if (!articles) return errorResponse(res, 404, 'No articles found');
+    const article = articles.filter((article) => article.state === 'published');
     return successResponse(res, 200, 'post fetched successfully', article)
   } catch (error) {
     handleError(error, req);
@@ -40,11 +39,11 @@ const getAllArticles = async (req, res) => {
 const getAllArticleById = async (req, res) => {
   try {
     const { articleId } = req.params;
-    const article = await Article.findById(articleId)
+    const article = await Article.findById(articleId).where({ state: "published" });
     if (!article) return errorResponse(res, 404, 'Article not found');
-    article.readCount  +=  1
+    article.readCount += 1
     const result = await article.save();
-    return successResponse(res, 200, 'article fetched successfully', article)
+    return successResponse(res, 200, 'article fetched successfully', result);
   } catch (error) {
     handleError(error, req);
     return errorResponse(res, 500, 'Server error');
@@ -58,11 +57,25 @@ const editArticle = async (req, res) => {
     const { body } = req.body;
     const article = await Article.findById(articleId);
     if (!article) return errorResponse(res, 404, 'Article not found');
-    const user =  await  User.findById(id);
-    if(!user) return errorResponse(res, 404, 'User not found');
-    if(article.user_id.toString() != user.id) return errorResponse(res, 401,'user not authorized');
-    const updatedArticle = await Article.findByIdAndUpdate(article, { body }, { new: true });
-    return successResponse(res, 200, 'article updated successfully', updatedArticle);
+    if (article.user_id.toString() != id) return errorResponse(res, 401, 'user not authorized');
+    const editedArticle = await Article.findByIdAndUpdate(article, { body }, { new: true });
+    return successResponse(res, 200, 'article updated successfully', editedArticle);
+  } catch (error) {
+    handleError(error, req);
+    return errorResponse(res, 500, 'Server error');
+  }
+}
+
+const updateArticle = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { articleId } = req.params;
+    const article = await Article.findById(articleId);
+    if (!article) return errorResponse(res, 404, 'Article not found');
+    if (article.user_id.toString() != id) return errorResponse(res, 401, 'user not authorized');
+    article.state = 'published';
+    const result = await article.save();
+    return successResponse(res, 200, 'article updated successfully', result);
   } catch (error) {
     handleError(error, req);
     return errorResponse(res, 500, 'Server error');
@@ -74,4 +87,5 @@ module.exports = {
   getAllArticles,
   getAllArticleById,
   editArticle,
+  updateArticle,
 }
