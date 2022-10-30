@@ -26,10 +26,9 @@ const createArticle = async (req, res) => {
 
 const getAllArticles = async (req, res) => {
   try {
-    const articles = await Article.find();
+    const articles = await Article.find().where({state: 'published'})
     if (!articles) return errorResponse(res, 404, 'No articles found');
-    const article = articles.filter((article) => article.state === 'published');
-    return successResponse(res, 200, 'post fetched successfully', article)
+    return successResponse(res, 200, 'post fetched successfully', articles)
   } catch (error) {
     handleError(error, req);
     return errorResponse(res, 500, 'Server error');
