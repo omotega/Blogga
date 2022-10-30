@@ -82,10 +82,26 @@ const updateArticle = async (req, res) => {
   }
 }
 
+const deleteArticle = async(req,res) => {
+  try {
+    const { id } = req.user;
+    const { articleId } = req.params;
+    const article = await Article.findById(articleId);
+    if (!article) return errorResponse(res, 404, 'Article not found');
+    if (article.user_id.toString() != id) return errorResponse(res, 401, 'user not authorized');
+    const deletedArticle = await Article.findByIdAndDelete(article);
+    return successResponse(res, 200, 'article deleted successfully', articleId);
+  } catch (error) {
+    handleError(error, req);
+    return errorResponse(res, 500, 'Server error');
+  }
+}
+
 module.exports = {
   createArticle,
   getAllArticles,
   getAllArticleById,
   editArticle,
   updateArticle,
+  deleteArticle,
 }
