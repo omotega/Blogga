@@ -26,9 +26,17 @@ const createArticle = async (req, res) => {
 
 const getAllArticles = async (req, res) => {
   try {
-    const { page, limit, author, title, tag } = req.query;
-    const skip = (page - 1) * 20;
-    const articles = await Article.find({ author: author, title: title, tag: tag }).sort({ readingTime: 1, readCount: -1, timestamps: -1 }).skip(skip).limit(limit).where({ state: 'published' });
+    const { page, limit } = req.query;
+    const skip = (page - 1) * 10;
+    const search = {};
+    if (req.query.author) {
+      search = { Author: req.query.author }
+    } else if (req.query.title) {
+      search = { title: req.query.title }
+    } else if (req.query.tags) {
+      search = { tag: req.query.tag }
+    }
+    const articles = await Article.find(search).sort({ readingTime: 1, readCount: -1, timestamps: -1 }).skip(skip).limit(limit).where({ state: 'published' });
     if (!articles) return errorResponse(res, 404, 'No articles found');
     return successResponse(res, 200, 'post fetched successfully', { articleNumbers: articles.length, page: page, articles: articles })
   } catch (error) {
@@ -103,7 +111,8 @@ const getAllUserArticle = async (req, res) => {
     const { id } = req.user;
     const { limit, page, state } = req.query
     const skip = (page - 1) * 10;
-    const articles = await Article.find({ authorId: id,state:state}).skip(skip).limit(limit);
+    const queryobject = { authorId: id, state: state }
+    const articles = await Article.find(queryobject).skip(skip).limit(limit);
     if (!articles) return errorResponse(res, 404, 'Article not found');
     return successResponse(res, 200, 'article fetched successfully', { articleNumber: articles.length, page: page, article: articles });
   } catch (error) {
