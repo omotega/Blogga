@@ -7,7 +7,7 @@ const port = process.env.PORT;
 const { Dbconnect } = require('./config/db');
 const userRouter = require('./routes/userroute');
 const articleRouter = require('./routes/articleroute');
-const { application } = require('express');
+
 
 const app = express();
 
