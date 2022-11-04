@@ -26,9 +26,12 @@ const createArticle = async (req, res) => {
 
 const getAllArticles = async (req, res) => {
   try {
-    const articles = await Article.find().where({state: 'published'})
+    // const { id } = req.user;
+    const { page, limit,title,tag } = req.query;
+    const skip = (page - 1) * 20;
+    const articles = await Article.find().skip(skip).limit(limit).where({state:'published'})
     if (!articles) return errorResponse(res, 404, 'No articles found');
-    return successResponse(res, 200, 'post fetched successfully', articles)
+    return successResponse(res, 200, 'post fetched successfully', { articleNumbers: articles.length, page: page, articles: articles })
   } catch (error) {
     handleError(error, req);
     return errorResponse(res, 500, 'Server error');
@@ -38,7 +41,7 @@ const getAllArticles = async (req, res) => {
 const getAllArticleById = async (req, res) => {
   try {
     const { articleId } = req.params;
-    const article = await Article.findById(articleId).where({ state: "published" });
+    const article = await Article.findById(articleId).populate('user_id', { firstName: 1, lastName: 1 })
     if (!article) return errorResponse(res, 404, 'Article not found');
     article.readCount += 1
     const result = await article.save();
@@ -81,7 +84,7 @@ const updateArticle = async (req, res) => {
   }
 }
 
-const deleteArticle = async(req,res) => {
+const deleteArticle = async (req, res) => {
   try {
     const { id } = req.user;
     const { articleId } = req.params;
@@ -96,6 +99,18 @@ const deleteArticle = async(req,res) => {
   }
 }
 
+const getAllUserArticle = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const articles = await Article.find({ userId: id }).populate('user_id');
+    if (!articles) return errorResponse(res, 404, 'Article not found');
+    return successResponse(res, 200, 'article fetched successfully', articles);
+  } catch (error) {
+    handleError(error, req);
+    return errorResponse(res, 500, 'Server error');
+  }
+}
+
 module.exports = {
   createArticle,
   getAllArticles,
@@ -103,4 +118,5 @@ module.exports = {
   editArticle,
   updateArticle,
   deleteArticle,
+  getAllUserArticle,
 }
