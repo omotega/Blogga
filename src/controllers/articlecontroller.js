@@ -26,10 +26,9 @@ const createArticle = async (req, res) => {
 
 const getAllArticles = async (req, res) => {
   try {
-    // const { id } = req.user;
-    const { page, limit,title,tag } = req.query;
+    const { page, limit, author, title, tag } = req.query;
     const skip = (page - 1) * 20;
-    const articles = await Article.find().skip(skip).limit(limit).where({state:'published'})
+    const articles = await Article.find({ author: author, title: title, tag: tag }).sort({ readingTime: 1, readCount: -1, timestamps: -1 }).skip(skip).limit(limit).where({ state: 'published' });
     if (!articles) return errorResponse(res, 404, 'No articles found');
     return successResponse(res, 200, 'post fetched successfully', { articleNumbers: articles.length, page: page, articles: articles })
   } catch (error) {
@@ -102,9 +101,11 @@ const deleteArticle = async (req, res) => {
 const getAllUserArticle = async (req, res) => {
   try {
     const { id } = req.user;
-    const articles = await Article.find({ userId: id }).populate('user_id');
+    const { limit, page, state } = req.query
+    const skip = (page - 1) * 10;
+    const articles = await Article.find({ authorId: id,state:state}).skip(skip).limit(limit);
     if (!articles) return errorResponse(res, 404, 'Article not found');
-    return successResponse(res, 200, 'article fetched successfully', articles);
+    return successResponse(res, 200, 'article fetched successfully', { articleNumber: articles.length, page: page, article: articles });
   } catch (error) {
     handleError(error, req);
     return errorResponse(res, 500, 'Server error');
