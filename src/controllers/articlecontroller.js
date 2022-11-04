@@ -29,7 +29,6 @@ const getAllArticles = async (req, res) => {
     const page = req.query.page || 1
     const limit = req.query.limit || 20
     const skip = (page - 1) * 10;
-    // const sorts = req.query.sort ? req.query.sort.split(',').join(' '): '-createdAt'
     const search = {};
     if (req.query.author) {
       search.author = req.query.author
