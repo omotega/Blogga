@@ -26,17 +26,19 @@ const createArticle = async (req, res) => {
 
 const getAllArticles = async (req, res) => {
   try {
-    const { page, limit } = req.query;
+    const page = req.query.page || 1
+    const limit = req.query.limit || 20
     const skip = (page - 1) * 10;
+    // const sorts = req.query.sort ? req.query.sort.split(',').join(' '): '-createdAt'
     const search = {};
     if (req.query.author) {
-      search = { Author: req.query.author }
+      search.author = req.query.author
     } else if (req.query.title) {
-      search = { title: req.query.title }
+      search.title = req.query.title
     } else if (req.query.tags) {
-      search = { tag: req.query.tag }
+      search.tags = req.query.tags
     }
-    const articles = await Article.find(search).sort({ readingTime: 1, readCount: -1, timestamps: -1 }).skip(skip).limit(limit).where({ state: 'published' });
+    const articles = await Article.find(search).sort({readCount: 1,readingTime: -1,createdAt: -1}).skip(skip).limit(limit).where({ state: 'published' });
     if (!articles) return errorResponse(res, 404, 'No articles found');
     return successResponse(res, 200, 'post fetched successfully', { articleNumbers: articles.length, page: page, articles: articles })
   } catch (error) {
@@ -109,7 +111,9 @@ const deleteArticle = async (req, res) => {
 const getAllUserArticle = async (req, res) => {
   try {
     const { id } = req.user;
-    const { limit, page, state } = req.query
+    const { state } = req.query
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 20;
     const skip = (page - 1) * 10;
     const queryobject = { authorId: id, state: state }
     const articles = await Article.find(queryobject).skip(skip).limit(limit);
