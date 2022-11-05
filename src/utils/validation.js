@@ -24,8 +24,7 @@ const loginValidation = joi.object({
     .required(),
 });
 
-
 module.exports = {
   signupValidation,
-  loginValidation,
+  loginValidation,  
 }
