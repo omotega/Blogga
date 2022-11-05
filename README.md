@@ -299,17 +299,17 @@ Success
 ```
 
 
-Get Posts By User
+### Get Posts By User
 
-Route: /api/v1/articles/userblog
+-Route: /api/v1/articles/userblog
 
-Method: GET
+-Method: GET
 
-Header
+-Header
 
-Authorizaton: Bearer ${token}
+-Authorizaton: Bearer ${token}
 
-Query Params
+-Query Params
 
 -page default(1)
 
@@ -386,15 +386,15 @@ Response
 }
 ```
 
-Delete Post
+### Delete Post
 
-Route: /api/v1/articles/:articleId
+-Route: /api/v1/articles/:articleId
 
-Method: DELETE
+-Method: DELETE
 
-Header
+-Header
 
-Authorizaton: Bearer ${token}
+-Authorizaton: Bearer ${token}
 
 Response
 ```
@@ -407,11 +407,11 @@ Response
 
 
 ## Get All Posts
-Route: /api/v1/articles
+-Route: /api/v1/articles
 
-Method: GET
+-Method: GET
 
-Query Param:
+-Query Param:
 
 -page (default 1)
 
