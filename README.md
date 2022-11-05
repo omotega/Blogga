@@ -431,7 +431,7 @@ Success
     "message": "post fetched successfully",
     "statusCode": 200,
     "data": {
-        "articleNumbers": 18,
+        "articleNumbers": 20,
         "page": "1",
         "articles": [
             {
