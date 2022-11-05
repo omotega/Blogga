@@ -260,10 +260,11 @@ Success
 ## Get Post By Id
 
 Route: /api/v1/articles/:articleId
+
 Method: GET
 
 Response
-<!--  -->
+
 
 Success
 ```
@@ -299,14 +300,21 @@ Success
 Get Posts By User
 
 Route: /api/v1/userblog
+
 Method: GET
+
 Header
+
 Authorizaton: Bearer ${token}
 
 Query Params
-page default(1)
-limit default(10)
-state
+
+-page default(1)
+
+-limit default(10)
+
+-state
+
 
 Response
 ```
@@ -377,10 +385,15 @@ Response
 ```
 
 Delete Post
+
 Route: /api/v1/articles/articleId
+
 Method: GET
+
 Header
+
 Authorizaton: Bearer ${token}
+
 Response
 ```
 {
@@ -398,12 +411,18 @@ Method: GET
 
 Query Param
 
-page (default 1)
-limit (default 20)
-author
-title
-tags
-sort (-read_count || read_count || -reading_time || reading_time || -timestamp || timestamp )
+-page (default 1)
+
+-limit (default 20)
+
+-author
+
+-title
+
+-tags
+
+-sort (-read_count || read_count || -reading_time || reading_time || -timestamp || timestamp )
+
 Responses
 
 Success
