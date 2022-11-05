@@ -64,11 +64,11 @@ const editArticle = async (req, res) => {
   try {
     const { id } = req.user;
     const { articleId } = req.params;
-    const { body } = req.body;
+    const { body,title,description,tags } = req.body;
     const article = await Article.findById(articleId);
     if (!article) return errorResponse(res, 404, 'Article not found');
     if (article.user_id.toString() != id) return errorResponse(res, 401, 'user not authorized');
-    const editedArticle = await Article.findByIdAndUpdate(article, { body }, { new: true });
+    const editedArticle = await Article.findByIdAndUpdate(article, { body,title,description,tags }, { new: true });
     return successResponse(res, 200, 'article updated successfully', editedArticle);
   } catch (error) {
     handleError(error, req);
