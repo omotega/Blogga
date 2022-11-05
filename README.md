@@ -64,7 +64,7 @@ Models
 
 ### Signup User
 
-- Route: /api/v1/users//signup
+- Route: /api/v1/users/signup
 - Method: POST
 - Body: 
 ```
@@ -101,7 +101,7 @@ Success
 ### Login User
 
 - Route: /api/v1/users/login
-- Method: POST
+- Method: GET
 - Body: 
 ```
 {
@@ -184,7 +184,7 @@ Success
 ---
 ### Update Post By State
 
-- Route: /api/v1/articles/orders/:articleId
+- Route: /api/v1/articles/:articleId
 - Method: PATCH
 - Header
     - Authorization: Bearer {token}
@@ -222,7 +222,7 @@ Success
 ### Update Post
 
 - Route: /api/v1/articles/:articleId
-- Method: Post
+- Method: PATCH
 - Header:
     - Authorization: Bearer {token}
 - Body
@@ -301,7 +301,7 @@ Success
 
 Get Posts By User
 
-Route: /api/v1/userblog
+Route: /api/v1/articles/userblog
 
 Method: GET
 
@@ -388,9 +388,9 @@ Response
 
 Delete Post
 
-Route: /api/v1/articles/articleId
+Route: /api/v1/articles/:articleId
 
-Method: GET
+Method: DELETE
 
 Header
 
@@ -407,7 +407,7 @@ Response
 
 
 ## Get All Posts
-Route: api/v1/articles/
+Route: /api/v1/articles
 
 Method: GET
 
