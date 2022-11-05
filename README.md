@@ -266,6 +266,7 @@ Response
 <!--  -->
 
 Success
+```
 {
     "message": "article fetched successfully",
     "statusCode": 200,
@@ -292,6 +293,7 @@ Success
         "__v": 0
     }
 }
+```
 
 
 Get Posts By User
@@ -307,6 +309,7 @@ limit default(10)
 state
 
 Response
+```
 {
     "message": "article fetched successfully",
     "statusCode": 200,
@@ -371,6 +374,7 @@ Response
                 "__v": 0
             },
 }
+```
 
 Delete Post
 Route: /api/v1/articles/articleId
@@ -378,12 +382,13 @@ Method: GET
 Header
 Authorizaton: Bearer ${token}
 Response
-
+```
 {
     "message": "article deleted successfully",
     "statusCode": 200,
     "data": "6364e465adf50d9c70793512"
 }
+```
 
 
 ## Get All Posts
@@ -402,7 +407,7 @@ sort (-read_count || read_count || -reading_time || reading_time || -timestamp |
 Responses
 
 Success
-
+```
 {
     "message": "post fetched successfully",
     "statusCode": 200,
@@ -488,7 +493,7 @@ Success
                 "__v": 0
             },
 }            
-
+```
 ...
 
 ## Contributor
