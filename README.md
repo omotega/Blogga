@@ -191,6 +191,7 @@ Success
 - Responses
 
 Success
+```
 {
     "message": "article updated successfully",
     "statusCode": 200,
