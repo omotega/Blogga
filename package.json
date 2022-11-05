@@ -6,8 +6,8 @@
   "author": "omotega <tomoyibo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon ./src/index.js",
-    "start":"node ./src/index.js"
+    "dev": "NODE_ENV=development nodemon ./src/index.js",
+    "start":"NODE_ENV=production node ./src/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
