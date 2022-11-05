@@ -226,10 +226,13 @@ Success
 - Header:
     - Authorization: Bearer {token}
 - Body
+```
     {
     "body": "im trying to delete this blog from my database",
     "tags": ["javascript","alt"]
     }
+    
+    ```
 
 Success
 ```
@@ -409,7 +412,7 @@ Route: api/v1/articles/
 
 Method: GET
 
-Query Param
+Query Param:
 
 -page (default 1)
 
