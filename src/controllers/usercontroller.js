@@ -1,11 +1,10 @@
 const User = require('../model/usermodel');
-const { hashPassword, comparePassword } = require('../utils/hash');
+const { Helper } = require('../utils/genutils');
 const {
   errorResponse,
   successResponse,
   handleError,
 } = require('../utils/responses');
-const { generateToken  } = require('../utils/token')
 
 const signUp = async (req, res) => {
   try {
@@ -15,7 +14,7 @@ const signUp = async (req, res) => {
     }
     const userExist = await User.findOne({ email });
     if (userExist) return errorResponse(res, 401, 'user already exist');
-    const hash = await hashPassword(password);
+    const hash = await Helper.hashPassword(password);
     const user = await User.create({
       firstName,
       lastName,
@@ -37,9 +36,9 @@ const login = async (req, res) => {
     }
     const user = await User.findOne({ email });
     if (!user) return errorResponse(res, 404, 'user not found');
-    const isPassword = await comparePassword(password,user.password);
+    const isPassword = await Helper.comparePassword(password,user.password);
     if (!isPassword) return errorResponse(res, 401, 'incorrect password');
-    const token = await generateToken({ id: user.id, firstName: user.firstName,lastName: user.lastName });
+    const token = await Helper.generateToken({ id: user.id, firstName: user.firstName,lastName: user.lastName });
     return successResponse(res, 200, 'user logged in successfully', {
       user,
       token,
