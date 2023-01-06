@@ -16,8 +16,14 @@ function handleError(err, req) {
   );
 }
 
+function validateError(res, statusCode, error) {
+  const resObj = { statusCode, error };
+  return res.status(statusCode).send(resObj);
+}
+
 module.exports = {
   errorResponse,
   successResponse,
   handleError,
+  validateError
 };
