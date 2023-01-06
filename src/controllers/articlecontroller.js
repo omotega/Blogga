@@ -1,5 +1,5 @@
 const Article = require('../model/articlemodel');
-const { calculateReadingTime } = require('../utils/genutils');
+const { Helper } = require('../utils/genutils');
 const { successResponse, handleError, errorResponse } = require('../utils/responses');
 
 const createArticle = async (req, res) => {
@@ -7,7 +7,7 @@ const createArticle = async (req, res) => {
     const { title, description, body, tags } = req.body;
     const { id } = req.user;
     const author = `${req.user.firstName} ${req.user.lastName}`;
-    const readingTime = calculateReadingTime(body);
+    const readingTime = Helper.calculateReadingTime(body);
     const article = await Article.create({
       title,
       description,
